@@ -1,0 +1,47 @@
+name: Practica 10 TSCD
+
+on:
+  workflow_dispatch:
+    inputs:
+      entorno:
+        description: "Entorno de despliegue simulado"
+        required: true
+        type: choice
+        options:
+          - pruebas
+          - produccion
+        default: pruebas
+      nombre:
+        description: "Nombre que aparece en el saludo"
+        required: true
+        type: string
+        default: "Invitado"
+      detalle:
+        description: "Mostrar información adicional de la ejecución"
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  r1_inputs:
+    name: R1 - Workflow manual con inputs
+    runs-on: ubuntu-latest
+    env:
+      NOMBRE: ${{ inputs.nombre }}
+    steps:
+      - name: Saludo
+        run: echo "Un saludo a $NOMBRE"
+
+      - name: Despliegue simulado en pruebas
+        if: ${{ inputs.entorno == 'pruebas' }}
+        run: echo "Desplegando en el entorno de PRUEBAS"
+
+      - name: Despliegue simulado en produccion
+        if: ${{ inputs.entorno == 'produccion' }}
+        run: echo "Desplegando en el entorno de PRODUCCION"
+
+      - name: Mostrar información adicional
+        if: ${{ inputs.detalle }}
+        run: |
+          echo "Evento: ${{ github.event_name }}"
+          echo "Número de ejecución: ${{ github.run_number }}"
