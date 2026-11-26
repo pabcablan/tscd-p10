@@ -45,3 +45,24 @@ jobs:
         run: |
           echo "Evento: ${{ github.event_name }}"
           echo "Número de ejecución: ${{ github.run_number }}"
+
+  r2_condiciones:
+    name: R2 - Diferentes condiciones
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - name: Imprimir runner.os, github.event_name y matrix.os
+        run: |
+          echo "Evento: ${{ github.event_name }}"
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Matrix OS: ${{ matrix.os }}"
+
+      - name: Si el Sistema Operativo es Linux
+        if: runner.os == 'Linux'
+        run: echo "El sistema operativo es Linux"
+
+      - name: Si el Sistema Operativo es Windows
+        if: runner.os == 'Windows'
+        run: echo "El sistema operativo es Windows"
